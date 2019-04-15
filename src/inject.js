@@ -42,6 +42,12 @@ const runGithubScripts = () => {
 
 const updateGithubPage = () => {
 	if (location.pathname.match(/^\/vitalsource\/fraction\/pull\/.+/)) {
+
+		// don't do anything if the link has already been added to the page
+		if (document.querySelector('[data-userscript-injection=true]')) {
+			return;
+		}
+
 		const headerMeta = document.querySelector(".gh-header-meta");
 		const branchElement = headerMeta.querySelector('.head-ref');
 		const match = branchElement.innerText.match(/[Bb][Oo]-\d+/);
@@ -52,6 +58,7 @@ const updateGithubPage = () => {
 			const linkWrapper = document.createElement("a");
 			linkWrapper.setAttribute("href", `https://tickets.ingramcontent.com/browse/${issueId}`);
 			linkWrapper.setAttribute("target", "_blank");
+			linkWrapper.setAttribute("data-userscript-injection", "true");
 			linkWrapper.style.marginLeft = "5px";
 			linkWrapper.style.textDecoration = "underline";
 
